@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Random Password Generator</h1>
+            <div class="field">
+                <label class="label">Password Length</label>
+                <div class="control">
+                    <input class="input" type="number" id="length" value="16" min="4">
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-primary" onclick="generatePassword()">Generate Password</button>
+                <button class="button is-primary" onclick="reset()">Reset</button>
+            </div>
+            <div class="field">
+                <label class="label">Generated Password</label>
+                <div class="control">
+                    <input class="input" type="text" id="password" readonly>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Function to generate a strong password
+        function generateStrongPassword(length = 12) {
+            const lower = "abcdefghijklmnopqrstuvwxyz";
+            const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const digits = "0123456789";
+            const specialChars = "!@#$%^&*()_+[]{}|;:,.<>?";
+
+            const allChars = lower + upper + digits + specialChars;
+
+            // Ensure the password has at least one character from each set
+            let password = [
+                lower[Math.floor(Math.random() * lower.length)],
+                upper[Math.floor(Math.random() * upper.length)],
+                digits[Math.floor(Math.random() * digits.length)],
+                specialChars[Math.floor(Math.random() * specialChars.length)]
+            ];
+
+            // Fill the remaining length with random characters from all sets
+            for (let i = 4; i < length; i++) {
+                password.push(allChars[Math.floor(Math.random() * allChars.length)]);
+            }
+
+            // Shuffle the password to randomize the character positions
+            password = password.sort(() => Math.random() - 0.5);
+
+            return password.join('');
+        }
+
+        // Function to handle password generation
+        function generatePassword() {
+            const length = document.getElementById("length").value;
+            const password = generateStrongPassword(parseInt(length));
+            document.getElementById("password").value = password;
+        }
+
+        // Function to reset the generated password field
+        function reset() {
+            document.getElementById("password").value = "";
+        }
+    </script>
+</body>
+</html>
